@@ -1,146 +1,117 @@
-# Email Setup Guide for StayIndia
+# Email Setup Guide for Forgot Password Feature
 
-## Overview
+## Gmail App Password Setup
 
-StayIndia uses **Brevo** (formerly Sendinblue) for sending transactional emails. This guide will help you configure email functionality for OTP verification, booking confirmations, and check-in reminders.
+### Step 1: Enable 2-Step Verification
+1. Go to: **https://myaccount.google.com/security**
+2. Scroll down to "How you sign in to Google"
+3. Click on "2-Step Verification"
+4. Follow the prompts to enable it (you'll need your phone)
 
-## Why Brevo?
+### Step 2: Generate App Password
+1. Go to: **https://myaccount.google.com/apppasswords**
+2. You may need to sign in again
+3. Under "Select app", choose **"Mail"**
+4. Under "Select device", choose **"Other (Custom name)"**
+5. Enter a name like: **"StayIndia Booking System"**
+6. Click **"Generate"**
+7. Google will show you a 16-character password like: `xxxx xxxx xxxx xxxx`
+8. **Copy this password** (you won't be able to see it again)
 
-We switched from Gmail/Nodemailer to Brevo for several reasons:
-- **Better deliverability**: Professional email service with high delivery rates
-- **No spam issues**: Emails don't end up in spam folders
-- **Free tier**: 300 emails per day (perfect for development and small production)
-- **Easy setup**: Simple API key configuration
-- **Professional**: No app passwords or 2FA complications
-- **Analytics**: Track email delivery and opens
+### Step 3: Update Backend Configuration
+1. Open `backend/.env` file
+2. Find the line: `EMAIL_PASSWORD=your-gmail-app-password-here`
+3. Replace with your app password (remove spaces):
+   ```
+   EMAIL_PASSWORD=abcdabcdabcdabcd
+   ```
+4. Save the file
 
-## Quick Setup (5 minutes)
-
-### 1. Create Brevo Account
-1. Go to [https://www.brevo.com](https://www.brevo.com)
-2. Sign up for a free account
-3. Verify your email address
-
-### 2. Get API Key
-1. Log in to Brevo dashboard
-2. Go to "SMTP & API" → "API Keys"
-3. Click "Generate a new API key"
-4. Copy the API key (save it securely!)
-
-### 3. Verify Sender Email
-1. Go to "Senders, Domains & Dedicated IPs"
-2. Click "Add a sender"
-3. Enter your email address
-4. Verify it via the email Brevo sends you
-
-### 4. Configure Application
-Edit `backend/.env`:
-```env
-BREVO_API_KEY=xkeysib-your-actual-api-key-here
-BREVO_SENDER_EMAIL=your-verified-email@example.com
-```
-
-### 5. Test
+### Step 4: Restart Backend Server
 ```bash
 cd backend
 npm start
 ```
-Try the forgot password feature to test email sending!
 
-## Detailed Setup Instructions
+## Testing the Feature
 
-See [BREVO_SETUP_GUIDE.md](./BREVO_SETUP_GUIDE.md) for complete step-by-step instructions.
+### Test Forgot Password Flow:
+1. Go to login page: http://localhost:5173/login
+2. Click "Forgot password?"
+3. Enter a registered email address
+4. Click "Send OTP"
+5. Check the email inbox for OTP
+6. Enter the 6-digit OTP
+7. Set a new password
+8. Login with the new password
 
-## Email Features
+## Email Configuration Details
 
-### 1. Password Reset OTP
-- Sent when user clicks "Forgot Password"
-- Contains 6-digit OTP code
-- Valid for 10 minutes
-- Beautiful HTML template with gradient design
-
-### 2. Booking Confirmation
-- Sent immediately after booking
-- Includes booking details, dates, and total price
-- Professional confirmation template
-
-### 3. Check-in Reminder
-- Scheduled for 8 AM on check-in date
-- Friendly reminder with checklist
-- Helps users prepare for their stay
-
-## Environment Variables
-
-Required in `backend/.env`:
-```env
-# Brevo Configuration
-BREVO_API_KEY=your-brevo-api-key
-BREVO_SENDER_EMAIL=your-verified-sender-email@example.com
-
-# Database
-MONGODB_URI=your-mongodb-uri
-PORT=5000
-SESSION_SECRET=your-session-secret
-NODE_ENV=development
-```
-
-## Testing Emails
-
-### Test OTP Email:
-1. Go to login page
-2. Click "Forgot Password"
-3. Enter your email
-4. Check your inbox for OTP
-
-### Test Booking Emails:
-1. Login as a user
-2. Book a property
-3. Check your inbox for:
-   - Immediate booking confirmation
-   - Check-in reminder (on check-in date)
+**Sender Email:** hotelbooking356@gmail.com  
+**Service:** Gmail SMTP  
+**Port:** 587 (TLS)  
+**OTP Validity:** 10 minutes
 
 ## Troubleshooting
 
-### Emails not received?
+### "Invalid credentials" error:
+- Make sure 2-Step Verification is enabled
+- Regenerate the app password
+- Remove any spaces from the password in .env
+- Restart the backend server
+
+### Email not received:
 - Check spam/junk folder
-- Verify sender email in Brevo dashboard
-- Check API key is correct
-- Ensure you haven't exceeded 300 emails/day limit
+- Verify the email address is correct
+- Check backend console for errors
+- Ensure EMAIL_USER and EMAIL_PASSWORD are set correctly
 
-### "API key is invalid" error?
-- Copy the entire API key without spaces
-- Regenerate a new key if needed
-- Restart backend server after changing .env
+### "Less secure app access" error:
+- This is outdated - use App Passwords instead
+- App Passwords work with 2-Step Verification
 
-### "Sender email not verified"?
-- Complete email verification in Brevo
-- Wait a few minutes after verification
-- Check Brevo dashboard for sender status
+## Alternative: Using Other Email Services
 
-## Free Tier Limits
+If you want to use a different email service, update `backend/config/email.js`:
 
-Brevo free tier includes:
-- ✅ 300 emails per day
-- ✅ Unlimited contacts
-- ✅ Email templates
-- ✅ Basic analytics
-- ✅ API access
+### For Outlook/Hotmail:
+```javascript
+const transporter = nodemailer.createTransport({
+  service: 'hotmail',
+  auth: {
+    user: 'your-email@outlook.com',
+    pass: 'your-password'
+  }
+});
+```
 
-Perfect for development and small-scale production!
+### For Custom SMTP:
+```javascript
+const transporter = nodemailer.createTransport({
+  host: 'smtp.example.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: 'your-email@example.com',
+    pass: 'your-password'
+  }
+});
+```
+
+## Security Notes
+
+- Never commit the .env file to Git
+- Keep your app password secure
+- Rotate app passwords periodically
+- Use environment variables in production
+- Consider using a dedicated email service like SendGrid or AWS SES for production
 
 ## Production Recommendations
 
-1. **Use custom domain email**: noreply@yourdomain.com
-2. **Set up SPF/DKIM records**: For better deliverability
-3. **Monitor analytics**: Track delivery and open rates
-4. **Upgrade if needed**: Paid plans for higher volume
+For production deployment, consider:
+1. **SendGrid** - Free tier: 100 emails/day
+2. **AWS SES** - Pay as you go, very cheap
+3. **Mailgun** - Free tier: 5,000 emails/month
+4. **Postmark** - Reliable transactional emails
 
-## Support
-
-- **Brevo Docs**: [https://developers.brevo.com](https://developers.brevo.com)
-- **Detailed Guide**: See [BREVO_SETUP_GUIDE.md](./BREVO_SETUP_GUIDE.md)
-- **Application Logs**: Check backend console for errors
-
----
-
-**Email functionality ready!** 📧✨
+These services provide better deliverability and analytics than Gmail.
