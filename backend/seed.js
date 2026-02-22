@@ -107,9 +107,9 @@ async function seedDB() {
 
     // Create admin user
     const admin = new User({
-      username: 'admin',
-      email: 'admin@example.com',
-      password: 'admin123',
+      username: 'Hariram',
+      email: '23211a6765@gmail.com',
+      password: 'Hariram23@',
       role: 'admin'
     });
     await admin.save();
@@ -125,7 +125,7 @@ async function seedDB() {
 
     console.log('Database seeded successfully!');
     console.log('Demo credentials: email: demo@example.com, password: password123');
-    console.log('Admin credentials: email: admin@example.com, password: admin123');
+    console.log('Admin credentials: email: 23211a6765@gmail.com, password: Hariram23@');
     
     mongoose.connection.close();
   } catch (error) {
