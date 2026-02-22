@@ -1,8 +1,20 @@
-# Airbnb Clone - Full Stack Application
+# StayIndia - Hotel Booking System
 
-A full-featured Airbnb clone built with React, Node.js, Express, and MongoDB.
+A production-ready, full-stack hotel booking platform built with React, Node.js, Express, and MongoDB. Features include user authentication, booking management, admin dashboard, email notifications, and more.
 
-## Features
+🌐 **Live Demo**: [Coming Soon - Deploy using DEPLOY_NOW.md]
+
+📦 **GitHub**: https://github.com/hariram-23/Hotel-Booking-StayIndia
+
+## 🚀 Quick Start
+
+### For Deployment
+**Ready to deploy?** Open **[DEPLOY_NOW.md](DEPLOY_NOW.md)** for step-by-step instructions!
+
+### For Local Development
+See **[INSTALLATION.md](INSTALLATION.md)** for detailed setup instructions.
+
+## ✨ Features
 
 ### Authentication & Authorization
 - User registration with encrypted password (bcrypt)
@@ -223,3 +235,62 @@ This project uses MongoDB GridFS to store images directly in the database:
 ## License
 
 MIT License - feel free to use this project for learning or personal use.
+
+
+## 🚀 Deployment
+
+This project is ready for production deployment!
+
+### Quick Deploy
+1. Read **[DEPLOY_NOW.md](DEPLOY_NOW.md)** for step-by-step instructions
+2. Follow **[PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md)** to verify everything
+3. Deploy to Render, Vercel, or Railway (all free tiers available)
+
+### Deployment Documentation
+- **[DEPLOY_NOW.md](DEPLOY_NOW.md)** - Quick deployment guide (START HERE!)
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Comprehensive guide with multiple platforms
+- **[DEPLOYMENT_SUMMARY.md](DEPLOYMENT_SUMMARY.md)** - Overview of deployment readiness
+- **[PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md)** - Pre/post deployment checklist
+
+### Recommended Platform: Render
+- Free tier available
+- Automatic HTTPS
+- Easy setup
+- Deploy both frontend and backend
+
+**Estimated deployment time:** 15-20 minutes
+
+## 📚 Documentation
+
+- **[README.md](README.md)** - This file (project overview)
+- **[INSTALLATION.md](INSTALLATION.md)** - Local development setup
+- **[FEATURES.md](FEATURES.md)** - Complete feature list
+- **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - API endpoints reference
+- **[ADMIN_GUIDE.md](ADMIN_GUIDE.md)** - Admin panel documentation
+- **[EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md)** - Email configuration guide
+- **[SETUP.md](SETUP.md)** - Detailed setup instructions
+- **[QUICK_START.md](QUICK_START.md)** - Quick start guide
+
+## 🛠️ Built With
+
+- **Frontend**: React 18, React Router, Vite, Axios
+- **Backend**: Node.js, Express, MongoDB, Mongoose
+- **Authentication**: bcrypt, express-session, connect-mongo
+- **Email**: Nodemailer (Gmail)
+- **File Storage**: MongoDB GridFS, Multer
+- **Styling**: Custom CSS with modern design
+- **Deployment**: Render/Vercel ready
+
+## 👨‍💻 Author
+
+**Hariram**
+- GitHub: [@hariram-23](https://github.com/hariram-23)
+- Repository: [Hotel-Booking-StayIndia](https://github.com/hariram-23/Hotel-Booking-StayIndia)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+## ⭐ Show Your Support
+
+Give a ⭐️ if you like this project!
