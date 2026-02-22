@@ -1,0 +1,37 @@
+services:
+  # Backend API Service
+  - type: web
+    name: stayindia-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: BREVO_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: hotetbooking356@gmail.com
+      - key: EMAIL_FROM_NAME
+        value: StayIndia
+      - key: FRONTEND_URL
+        sync: false
+    healthCheckPath: /health
+
+  # Frontend Service
+  - type: web
+    name: stayindia-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false

@@ -1,7 +1,10 @@
 {
-  "name": "airbnb-frontend",
+  "name": "stayindia-frontend",
   "version": "1.0.0",
+  "description": "StayIndia Hotel Booking System Frontend",
   "type": "module",
+  "license": "MIT",
+  "author": "StayIndia Team",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
