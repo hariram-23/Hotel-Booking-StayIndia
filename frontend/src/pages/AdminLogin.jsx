@@ -53,7 +53,7 @@ export default function AdminLogin() {
       // Check if user is admin
       if (res.user.role !== 'admin') {
         setError('Access denied. Admin credentials required.');
-        await axios.post('/api/auth/logout', {}, { withCredentials: true });
+        await axios.post('/api/auth/logout');
         setLoading(false);
         return;
       }

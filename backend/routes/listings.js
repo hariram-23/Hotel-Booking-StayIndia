@@ -91,7 +91,7 @@ router.post('/', isAuthenticated, upload.single('image'), async (req, res) => {
       price: Number(price),
       location: location.trim(),
       country: country.trim(),
-      owner: req.session.userId,
+      owner: req.userId,
       image: req.file ? { 
         url: `/api/images/${req.file.filename}`, 
         filename: req.file.filename 

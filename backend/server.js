@@ -1,7 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const connectDB = require('./config/database');
 const errorHandler = require('./middleware/errorHandler');
@@ -51,25 +49,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Session configuration
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'fallback-secret-key-change-this',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    touchAfter: 24 * 3600
-  }),
-  cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    secure: true, // Always true for production
-    sameSite: 'none', // Required for cross-domain cookies
-    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
-  },
-  proxy: true // Trust proxy for secure cookies
-}));
 
 // API Routes
 app.use('/api/auth', authRoutes);

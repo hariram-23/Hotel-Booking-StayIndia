@@ -26,14 +26,14 @@ router.post('/:listingId', isAuthenticated, async (req, res) => {
     }
 
     // Check if user is trying to review their own listing
-    if (listing.owner.toString() === req.session.userId) {
+    if (listing.owner.toString() === req.userId) {
       return res.status(400).json({ message: 'You cannot review your own listing' });
     }
 
     const review = new Review({
       rating: Number(rating),
       comment: comment.trim(),
-      author: req.session.userId,
+      author: req.userId,
       listing: listingId
     });
 

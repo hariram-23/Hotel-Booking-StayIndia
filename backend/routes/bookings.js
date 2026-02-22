@@ -21,7 +21,7 @@ router.post('/', isAuthenticated, async (req, res) => {
     }
 
     // Check if user is trying to book their own listing
-    if (listing.owner.toString() === req.session.userId) {
+    if (listing.owner.toString() === req.userId) {
       return res.status(400).json({ message: 'You cannot book your own listing' });
     }
 
@@ -64,7 +64,7 @@ router.post('/', isAuthenticated, async (req, res) => {
 
     const booking = new Booking({
       listing: listingId,
-      user: req.session.userId,
+      user: req.userId,
       checkIn: checkInDate,
       checkOut: checkOutDate,
       totalPrice
@@ -73,7 +73,7 @@ router.post('/', isAuthenticated, async (req, res) => {
     await booking.save();
 
     // Get user details for email
-    const user = await User.findById(req.session.userId);
+    const user = await User.findById(req.userId);
     
     // Send booking confirmation email
     try {
@@ -131,7 +131,7 @@ const scheduleCheckInReminder = (userEmail, userName, bookingDetails) => {
 
 router.get('/my-bookings', isAuthenticated, async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.session.userId })
+    const bookings = await Booking.find({ user: req.userId })
       .populate('listing')
       .sort({ createdAt: -1 });
     res.json(bookings);
