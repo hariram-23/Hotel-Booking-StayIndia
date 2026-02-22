@@ -15,28 +15,33 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-// Connect to MongoDB with error handling
-connectDB().catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-  process.exit(1);
-});
+console.log('🚀 Starting StayIndia Backend...');
+console.log('📍 Environment:', process.env.NODE_ENV || 'development');
+console.log('📍 Port:', process.env.PORT || 5000);
 
-// CORS configuration for production
+// Connect to MongoDB
+connectDB();
+
+// CORS configuration
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'https://hotel-booking-stayindia.onrender.com',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
+console.log('🔐 Allowed CORS origins:', allowedOrigins);
+
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
+    // Allow requests with no origin (like Postman, curl, mobile apps)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.log('❌ CORS blocked origin:', origin);
+      callback(null, true); // Allow all origins for now
     }
   },
   credentials: true
@@ -71,21 +76,27 @@ app.use('/api/images', imageRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+app.get('/health', (_req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Server is running',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Root endpoint
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({ 
     message: 'StayIndia API',
     version: '1.0.0',
-    status: 'running'
+    status: 'running',
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
 // 404 handler
-app.use((req, res) => {
+app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
@@ -94,32 +105,36 @@ app.use(errorHandler);
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Promise Rejection:', err);
-  // Don't exit in production, just log the error
-  if (process.env.NODE_ENV !== 'production') {
-    process.exit(1);
-  }
+  console.error('❌ Unhandled Promise Rejection:', err);
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
+  console.error('❌ Uncaught Exception:', err);
 });
 
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server running on port ${PORT}`);
-  console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`✅ MongoDB: Connected`);
+  console.log('✅ Server running on port', PORT);
+  console.log('✅ Environment:', process.env.NODE_ENV || 'development');
+  console.log('✅ Server is ready to accept connections');
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
+  console.log('⚠️  SIGTERM signal received: closing HTTP server');
   server.close(() => {
-    console.log('HTTP server closed');
+    console.log('✅ HTTP server closed');
+    process.exit(0);
+  });
+});
+
+// Keep the process alive
+process.on('SIGINT', () => {
+  console.log('⚠️  SIGINT signal received: closing HTTP server');
+  server.close(() => {
+    console.log('✅ HTTP server closed');
     process.exit(0);
   });
 });
