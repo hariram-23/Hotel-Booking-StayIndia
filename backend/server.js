@@ -64,9 +64,11 @@ app.use(session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-  }
+    secure: true, // Always true for production
+    sameSite: 'none', // Required for cross-domain cookies
+    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+  },
+  proxy: true // Trust proxy for secure cookies
 }));
 
 // API Routes
