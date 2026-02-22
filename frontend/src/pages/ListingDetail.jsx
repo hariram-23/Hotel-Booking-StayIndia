@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import axios from '../config/axios';
 
 export default function ListingDetail() {
   const [listing, setListing] = useState(null);

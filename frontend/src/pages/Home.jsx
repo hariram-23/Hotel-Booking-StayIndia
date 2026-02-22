@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../config/axios';
 import ListingCard from '../components/ListingCard';
 import SearchBar from '../components/SearchBar';
 import { useAuth } from '../context/AuthContext';
