@@ -28,6 +28,7 @@ const allowedOrigins = [
   'http://localhost:5174',
   'https://hotel-booking-stayindia.onrender.com',
   'https://hotel-booking-stayindia-2.onrender.com',
+  'https://hotel-booking-stayindia-3.onrender.com',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
