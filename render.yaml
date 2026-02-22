@@ -5,8 +5,9 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: cd backend && npm install
+    buildCommand: cd backend && npm install --legacy-peer-deps
     startCommand: cd backend && npm start
+    healthCheckPath: /
     envVars:
       - key: MONGODB_URI
         sync: false
@@ -20,6 +21,8 @@ services:
         sync: false
       - key: CLIENT_URL
         sync: false
+      - key: PORT
+        value: 5000
 
   # Frontend Service
   - type: web
@@ -27,7 +30,7 @@ services:
     env: static
     region: oregon
     plan: free
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && npm install --legacy-peer-deps && npm run build
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL

@@ -25,7 +25,7 @@ git push origin main
    - **Name**: `stayindia-backend`
    - **Root Directory**: `backend`
    - **Environment**: `Node`
-   - **Build Command**: `npm install`
+   - **Build Command**: `npm install --legacy-peer-deps`
    - **Start Command**: `npm start`
    - **Instance Type**: `Free`
 
@@ -51,7 +51,7 @@ git push origin main
 3. Configure:
    - **Name**: `stayindia-frontend`
    - **Root Directory**: `frontend`
-   - **Build Command**: `npm install && npm run build`
+   - **Build Command**: `npm install --legacy-peer-deps && npm run build`
    - **Publish Directory**: `dist`
 
 4. Add Environment Variable:
